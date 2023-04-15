@@ -16,7 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from ninja import NinjaAPI, Schema
+
+api = NinjaAPI()
+
+class HelloSchema(Schema):
+    name: str = "World"
+
+#/api/hello?name=you => "Hello you"
+# @api.get("/hello")
+@api.post("/hello")
+def hello(request, data: HelloSchema):# name: str):# ="World"):
+    return f"Hello {data.name}" #{name}!!"
+
+"""
+/api/math?a=1&b=2 => add: 3, multiply: 2
+@api.get("/math")
+"""
+#/api/math/1and2 => add: 3, multiply: 2
+@api.get("math/{a}and{b}")
+def math(request, a: int, b: int):
+    return {"add": a + b, "multiply": a * b}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api/", api.urls),
 ]
