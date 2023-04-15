@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ninja import NinjaAPI, Schema
+# from ninja import NinjaAPI, Schema
+from testCRUD.api import api
 
-api = NinjaAPI()
+# api = NinjaAPI()
 
-class HelloSchema(Schema):
-    name: str = "World"
+# class HelloSchema(Schema):
+#     name: str = "World"
 
 # Can't use
 # class UserSchema(Schema):
@@ -35,39 +36,40 @@ class HelloSchema(Schema):
 # def me(request):
 #     return request.user
 
-class UserSchema(Schema):
-    username: str
-    is_authenticated: bool = True#False
-    email: str
-    first_name: str
-    last_name: str
+# class UserSchema(Schema):
+#     username: str
+#     is_authenticated: bool = True#False
+#     email: str
+#     first_name: str
+#     last_name: str
 
-class Error(Schema):
-    message: str
+# class Error(Schema):
+#     message: str
 
-@api.get("/me", response={200: UserSchema, 403: Error})
-def me(request):
-    user = UserSchema(username="pmikada", email="test@example.com", first_name="Panupong", last_name="Mikada")
-    if not user.is_authenticated:
-        return 403, {"message": "Please sign in first"}
-    return user
+# @api.get("/me", response={200: UserSchema, 403: Error})
+# def me(request):
+#     user = UserSchema(username="pmikada", email="test@example.com", first_name="Panupong", last_name="Mikada")
+#     if not user.is_authenticated:
+#         return 403, {"message": "Please sign in first"}
+#     return user
 
 #/api/hello?name=you => "Hello you"
 # @api.get("/hello")
-@api.post("/hello")
-def hello(request, data: HelloSchema):# name: str):# ="World"):
-    return f"Hello {data.name}" #{name}!!"
+# @api.post("/hello")
+# def hello(request, data: HelloSchema):# name: str):# ="World"):
+#     return f"Hello {data.name}" #{name}!!"
 
 """
 /api/math?a=1&b=2 => add: 3, multiply: 2
 @api.get("/math")
 """
 #/api/math/1and2 => add: 3, multiply: 2
-@api.get("math/{a}and{b}")
-def math(request, a: int, b: int):
-    return {"add": a + b, "multiply": a * b}
+# @api.get("math/{a}and{b}")
+# def math(request, a: int, b: int):
+#     return {"add": a + b, "multiply": a * b}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", api.urls),
+    # path("api/", api.urls),
+    path('api/', api.urls)
 ]
